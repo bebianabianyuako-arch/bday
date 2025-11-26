@@ -1,6 +1,16 @@
 {
     "version": 2,
+    "builds": [
+        {
+            "src": "birthday_project/wsgi.py",
+            "use": "@vercel/python"
+        }
+    ],
     "routes": [
+        {
+            "src": "/static/(.*)",
+            "dest": "birthday_project/wsgi.py"
+        },
         {
             "src": "/(.*)",
             "dest": "birthday_project/wsgi.py"
