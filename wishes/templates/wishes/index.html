@@ -1,0 +1,665 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, {{ name }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        /* --- SOFT MINIMALIST PALETTE --- */
+        :root {
+            --bg-cream: #FFF9F2;       /* Cream lembut */
+            --text-dark: #5D4037;      /* Coklat tua (lebih hangat drpd hitam) */
+            --text-light: #8D6E63;     /* Coklat muda/mocca */
+            --accent-pink: #F4ACB7;    /* Dusty Pink (Dewasa) */
+            --accent-highlight: #FFCAD4; /* Pink lebih muda */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            font-family: 'Lato', sans-serif;
+            line-height: 1.8;
+            letter-spacing: 0.5px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-dark);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(255, 249, 242, 0.9); /* Cream transparan */
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid rgba(244, 172, 183, 0.3); /* Garis pink tipis */
+        }
+
+        .nav-date {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--accent-pink);
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-decor {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.8;
+            color: var(--accent-pink);
+        }
+
+        .hero-title {
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+        
+        .hero-subtitle {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--accent-pink);
+            border-bottom: 1px solid var(--accent-pink);
+            padding: 10px 20px;
+            display: inline-block;
+        }
+
+        /* --- CONTENT LAYOUT --- */
+        section {
+            padding: 100px 20px;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* --- PHOTO WITH TEXT (Clean) --- */
+        .content-block {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 80px;
+        }
+        
+        .photo-frame {
+            flex: 1;
+            height: 500px;
+            position: relative;
+        }
+        
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px; /* Sudut sedikit melengkung */
+            /* Shadow pink lembut */
+            box-shadow: 15px 15px 0px rgba(244, 172, 183, 0.3); 
+            transition: transform 0.5s ease;
+        }
+
+        .photo-frame:hover img {
+            transform: translate(-5px, -5px);
+        }
+
+        .text-frame {
+            flex: 1;
+        }
+
+        .text-frame h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: var(--accent-pink);
+        }
+
+        .text-frame p {
+            color: var(--text-light);
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        /* --- GALLERY GRID (Minimalist) --- */
+        .gallery-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-item {
+            height: 320px;
+            background: #fff;
+            padding: 10px; /* Frame putih polaroid style */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- NOTE SECTION (Soft Box) --- */
+        .note-section {
+            margin-top: 50px;
+            background-color: #FFF0F3; /* Pink sangat muda */
+            padding: 80px 40px;
+            text-align: center;
+            border-radius: 20px;
+        }
+
+        .note-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            font-style: italic;
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 60px;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            letter-spacing: 1px;
+        }
+
+        /* --- FADE ANIMATION --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3.2rem; }
+            .content-block { flex-direction: column; gap: 40px; }
+            .photo-frame { width: 100%; height: 400px; }
+            .photo-frame img { box-shadow: 10px 10px 0px rgba(244, 172, 183, 0.3); }
+            nav { padding: 20px; }
+        }
+
+        /* --- VIDEO GRID STYLE --- */
+        .video-grid {
+            display: grid;
+            /* Layout otomatis: di HP 1 kolom, di Laptop 3 kolom */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px; /* Jarak antar video */
+            margin-top: 30px;
+        }
+
+        .video-card {
+            background: white;
+            padding: 10px; /* Frame putih di sekeliling video */
+            border-radius: 10px;
+            /* Shadow Pink Khas Cream & Pink Theme */
+            box-shadow: 10px 10px 0px rgba(244, 172, 183, 0.4); 
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px); /* Efek naik dikit pas di-hover */
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 100%;
+            /* Pastikan rasio video tidak gepeng */
+            object-fit: cover; 
+            border-radius: 5px;
+            display: block;
+        }
+
+        /* --- HERO SECTION WITH VIDEO --- */
+        header {
+            height: 100vh;
+            width: 100%;
+            position: relative; /* Penting biar video ga lari */
+            overflow: hidden;   /* Biar video ga bocor keluar */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--text-dark); /* Warna tulisan default */
+        }
+
+        /* Styling Video Background */
+        #myVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Biar full screen tanpa gepeng */
+            z-index: 0;        /* Paling belakang */
+        }
+
+        /* Lapisan Overlay (Filter) */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 249, 242, 0.6); /* Warna Cream Transparan */
+            /* Kalau videonya terang bgt, ganti jadi rgba(0,0,0,0.3) biar agak gelap */
+            z-index: 1; /* Di atas video */
+            backdrop-filter: blur(2px); /* Efek blur dikit biar estetik (opsional) */
+        }
+
+        /* Konten Tulisan */
+        .hero-content {
+            position: relative;
+            z-index: 2; /* Paling depan (di atas overlay) */
+            padding: 20px;
+        }
+
+        /* Penyesuaian warna tulisan (Optional) */
+        /* Kalau videonya gelap, ubah warna tulisan jadi putih biar kontras */
+        /* .hero-title { color: white; } */
+
+        /* --- TIMELINE STYLE --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px 0;
+        }
+
+        /* Garis Tengah */
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--accent-pink);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        /* Posisi Kiri & Kanan */
+        .left { left: 0; text-align: right; }
+        .right { left: 50%; text-align: left; }
+
+        /* Titik Bulat di Garis */
+        .timeline-item::after {
+            content: '🌸'; /* Pakai emoji bunga sebagai titik */
+            position: absolute;
+            width: 30px; height: 30px;
+            right: -17px; /* Untuk yg kiri */
+            background-color: var(--bg-cream);
+            border: 2px solid var(--accent-pink);
+            top: 50px; /* Posisi vertikal titik */
+            border-radius: 50%;
+            z-index: 1;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        /* Koreksi posisi titik untuk yg kanan */
+        .right::after { left: -17px; }
+
+        /* --- MAGIC PHOTO SWAP (Hover Effect) --- */
+        .photo-swap-container {
+            position: relative;
+            width: 100%;
+            height: 250px; /* Tinggi foto timeline */
+            overflow: hidden;
+            border-radius: 10px;
+            border: 5px solid white;
+            box-shadow: 10px 10px 0px rgba(244, 172, 183, 0.4);
+            cursor: pointer;
+        }
+
+        .photo-swap-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.8s ease; /* Transisi halus */
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        /* Foto 'Alone' (Default muncul) */
+        .img-alone {
+            z-index: 2; /* Di atas */
+            opacity: 1;
+        }
+
+        /* Foto 'Together' (Ngumpet di bawah) */
+        .img-together {
+            z-index: 1; /* Di bawah */
+        }
+
+        /* SAAT DI-HOVER: Foto Alone menghilang, Foto Together kelihatan */
+        .photo-swap-container:hover .img-alone {
+            opacity: 0;
+        }
+
+        /* Deskripsi Timeline */
+        .timeline-date {
+            font-weight: bold; color: var(--accent-pink); margin-bottom: 5px; display: block;
+        }
+        .timeline-text {
+            font-size: 0.9rem; color: var(--text-light);
+        }
+
+        /* RESPONSIVE (HP) */
+        @media (max-width: 768px) {
+            .timeline::after { left: 31px; } /* Garis pindah ke kiri */
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+            .left, .right { left: 0; text-align: left; } /* Semua rata kiri */
+            .timeline-item::after { left: 15px; } /* Titik pindah kiri */
+            .photo-swap-container { height: 200px; }
+        }
+
+        /* --- ANIMASI GANTI FOTO --- */
+        #profile-img {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        /* Class helper untuk efek fading */
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.95); /* Sedikit mengecil pas ganti */
+        }
+
+        /* --- WELCOME OVERLAY --- */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-cream);
+            z-index: 9999; /* Paling atas menutupi semuanya */
+            display: flex; justify-content: center; align-items: center;
+            text-align: center;
+            transition: opacity 1s ease;
+        }
+
+        .overlay-content {
+            padding: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .btn-open {
+            background-color: var(--accent-pink);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Lato', sans-serif;
+            box-shadow: 0 5px 15px rgba(244, 172, 183, 0.4);
+            transition: transform 0.2s;
+        }
+
+        .btn-open:hover { transform: scale(1.05); }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- FLOATING MUSIC BUTTON --- */
+        #music-control {
+            position: fixed;
+            bottom: 20px; left: 20px;
+            width: 50px; height: 50px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 1000;
+            font-size: 1.2rem;
+            border: 2px solid var(--accent-pink);
+            animation: spin 4s linear infinite; /* Muter terus kalau lagu play */
+        }
+        
+        /* Class kalau musik dipause (berhenti muter) */
+        .paused { animation-play-state: paused !important; opacity: 0.7; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- SINGLE VIDEO STYLE (Updated) --- */
+        .video-wrapper {
+            /* Agar video tidak terlalu lebar di layar laptop */
+            max-width: 800px; 
+            width: 100%; /* Pastikan lebarnya responsif */
+            
+            /* Logic Centering (Penting!) */
+            margin: 0 auto; /* Tengah secara horizontal container-nya */
+            display: flex;  /* Aktifkan mode flex */
+            justify-content: center; /* Isi konten (video) dipaksa ke tengah */
+            align-items: center;     /* Isi konten dipaksa tengah vertikal */
+            
+            /* Dekorasi Frame */
+            background: white; 
+            padding: 10px;
+            border-radius: 10px; 
+            border: 1px solid white;
+            box-shadow: 15px 15px 0px rgba(244, 172, 183, 0.3);
+            overflow: hidden; /* Biar video ga bocor keluar frame */
+        }
+
+        /* Pastikan tag video-nya sendiri berperilaku nurut */
+        .video-wrapper video {
+            width: 100%;
+            height: auto; /* Tinggi menyesuaikan biar ga gepeng */
+            max-height: 500px; /* Batasi tingginya biar ga menuhin layar */
+            display: block; /* Hilangkan gap di bawah video */
+            object-fit: contain; /* PENTING: Biar seluruh video kelihatan (ga ke-crop) */
+            border-radius: 5px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <audio id="backsound" loop>
+        <source src="{% static 'music/lagu.mp3' %}" type="audio/mpeg">
+    </audio>
+
+    <div id="overlay">
+        <div class="overlay-content">
+            <div style="font-size: 3rem; margin-bottom: 20px;">💌</div>
+            <h2 style="color: var(--text-dark); margin-bottom: 10px;">Teruntuk nidnud</h2>
+            <p style="color: var(--text-light); margin-bottom: 30px;">Pake headset yaa biar lebih seru.</p>
+            <button onclick="openInvitation()" class="btn-open">Buka Sekarang</button>
+        </div>
+    </div>
+
+    <div id="music-control" onclick="toggleMusic()" style="display: none;">
+        🎵
+    </div>
+
+    <nav>
+        <div class="nav-date">Happy Birthday, ninunadnid.</div>
+        <div style="font-size: 0.8rem; letter-spacing: 2px; color: var(--text-light);">26th November.</div>
+    </nav>
+
+    <header>
+        <video autoplay muted loop playsinline id="myVideo">
+            <source src="{% static 'videos/header_bg.mp4' %}" type="video/mp4">
+            Browser kamu tidak support video background.
+        </video>
+
+        <div class="overlay"></div>
+
+        <div class="hero-content">
+            <div class="hero-decor">🌸</div>
+            <h1 class="hero-title">Happy Birthday,<br>{{ name }}</h1>
+            <div class="hero-subtitle">Selamat menempuh tahun ke 19 hidup di dunia</div>
+        </div>
+    </header>
+
+    <section class="fade-in">
+        <div class="content-block">
+            <div class="photo-frame">
+                <img 
+                    id="profile-img" 
+                    src="{% static 'images/foto1.jpg' %}" 
+                    alt="Birthday Girl" 
+                    onclick="changePhoto()"
+                    style="cursor: pointer;"
+                    title="Klik aku untuk ganti foto!"
+                >
+                <div style="position: absolute; bottom: 15px; right: 15px; background: white; padding: 5px 10px; border-radius: 20px; font-size: 0.7rem; color: var(--accent-pink); pointer-events: none; opacity: 0.8;">
+                    👆 Tap to shuffle
+                </div>
+            </div>
+            
+            <div class="text-frame">
+                <h2>Ciee makin tua</h2>
+                <p>
+                    Happy Birthday, ninunadnid!
+                    <br><br>
+                    Semoga di umur kamu yang ke 19 ini, kamu bisa menjadi orang yang lebih baik lagi dari sebelumnya. Semoga semua keinginanmu tercapai dan semua rencana yang kamu buat bisa terwujud. Maaf kalau mungkin ulang tahun kali ini aku bukan lagi orang yang selalu ada buat kamu. Semoga hadiah kecil ini bisa buat kamu seneng yaa.
+                    <br><br>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="fade-in">
+        <div class="note-section">
+            <p class="note-text">
+                "May this year bring you closer to your dreams and bring you the happiness you deserve."
+            </p>
+            <p style="font-size: 0.9rem; color: var(--text-light);">
+                — Abi.
+            </p>
+        </div>
+    </section>
+
+    <section class="fade-in" style="text-align: center;">
+        <h2 class="gallery-title">A Throwback to 2023</h2>
+        
+        <div class="video-wrapper">
+            <video controls poster="{% static 'images/foto6.jpg' %}">
+                <source src="{% static 'videos/video.mp4' %}" type="video/mp4">
+                Browser kamu tidak support video tag.
+            </video>
+        </div>
+    </section>
+
+    <footer>
+        Made with Memories · 2025
+    </footer>
+
+    <script>
+        // --- LOGIC GANTI FOTO SHUFFLE (YANG TADI) ---
+        const photos = [
+            "{% static 'images/foto1.jpg' %}", "{% static 'images/foto2.jpg' %}",
+            "{% static 'images/foto3.jpg' %}", "{% static 'images/foto4.jpg' %}",
+            "{% static 'images/foto5.jpg' %}"
+        ];
+        let currentIndex = 0;
+        function changePhoto() {
+            const imgElement = document.getElementById('profile-img');
+            imgElement.classList.add('fade-out');
+            setTimeout(() => {
+                currentIndex = (currentIndex + 1) % photos.length;
+                imgElement.src = photos[currentIndex];
+                imgElement.classList.remove('fade-out');
+            }, 500);
+        }
+
+        // --- LOGIC MUSIK & OVERLAY (BARU) ---
+        const audio = document.getElementById('backsound');
+        const overlay = document.getElementById('overlay');
+        const musicBtn = document.getElementById('music-control');
+
+        function openInvitation() {
+            // 1. Hilangkan Overlay
+            overlay.style.opacity = '0';
+            
+            // 2. Play Musik
+            audio.play().catch(error => {
+                console.log("Autoplay dicegah browser, perlu interaksi user lagi.");
+            });
+            
+            // 3. Munculkan tombol kontrol musik
+            musicBtn.style.display = 'flex';
+
+            // 4. Hapus overlay dari layar biar bisa di-klik isinya
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1000);
+        }
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.classList.remove('paused');
+            } else {
+                audio.pause();
+                musicBtn.classList.add('paused');
+            }
+        }
+
+        // --- OBSERVER FADE IN ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+    </script>
+
+    
+</body>
+</html>
